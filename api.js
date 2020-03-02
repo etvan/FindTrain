@@ -9,7 +9,7 @@ var app = express();
 var myRouter = express.Router();
 
 myRouter.route('/search')
-.get(function(req,res){
+.get(async function(req,res){
 
     var escale_array = (req.query.escale).split(",");
     var date_depart_array = (req.query.date_depart).split(",");
@@ -22,7 +22,9 @@ myRouter.route('/search')
     date_depart: date_depart_array,
     date_retour: date_retour_array,
     method : req.method});*/
-    const json = module(req.query.depart,req.query.arrivee,escale_array,date_depart_array,date_retour_array);
+    console.log('username : '+req.query.username);
+    console.log('password : '+req.query.password);
+    const json = await module(req.query.depart,req.query.arrivee,escale_array,date_depart_array,date_retour_array,req.query.username,req.query.password);
     res.json(json);
 });
 

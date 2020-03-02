@@ -7,14 +7,16 @@ async function clique_connexion(page) {
   await page.click('.header__signin > button');
 }
 
-async function connexion_trainline(page) {
+async function connexion_trainline(page,username,password) {
   await page.waitFor(1000);
   await page.waitForSelector(".signin__form > input[name='email']");
   await page.focus(".signin__form > input[name='email']");
-  await page.keyboard.type(process.env.LOGIN_TRAINLINE);
+  console.log('connexion_trainline.username : '+username);
+  await page.keyboard.type(username);
   await page.waitForSelector(".signin__form > input[name='password']");
   await page.focus(".signin__form > input[name='password']");
-  await page.keyboard.type(process.env.PASSWORD_TRAINLINE);
+  console.log('connexion_trainline.password : '+password);
+  await page.keyboard.type(password);
   await page.waitForSelector('#signin-form > div.signin__buttons.signin__buttons--wrapped > div:nth-child(2) > button');
   await page.click('#signin-form > div.signin__buttons.signin__buttons--wrapped > div:nth-child(2) > button');
 }
@@ -171,7 +173,7 @@ async function rechercher_trains(page,depart,arrivee,jour_depart,mois_depart,heu
 //     //await browser.close();
 // };
 
-module.exports = async function(ville_depart,ville_arrivee,escale,date_depart,date_retour) {
+module.exports = async function(ville_depart,ville_arrivee,escale,date_depart,date_retour,username,password) {
   const browser = await puppeteer.launch({
     headless: false,
     // args: [ '--proxy-server=' ]
@@ -186,8 +188,9 @@ module.exports = async function(ville_depart,ville_arrivee,escale,date_depart,da
   await clique_connexion(page);
 
   //CONNEXION
-
-  await connexion_trainline(page);
+  console.log('module.username : '+username);
+  console.log('module.password : '+password);
+  await connexion_trainline(page,username,password);
 
   //CREER REPONSE JSON
 
